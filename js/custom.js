@@ -1,146 +1,322 @@
-(function($){
-
-	$(".scroll").on("click",function (event) {
-        var $hash=$(this.hash);
-        var $hasval=$(this).attr('href');
-        if($hasval[0]=="#"){
-            if($hash.length>0){
-                 event.preventDefault();
-                $('html,body').animate({
-                    scrollTop: ($hash.offset().top - 70)
-                }, 1000);
-                $(".scroll").removeClass("active");
-                $(this).addClass("active");
-            }
-            return false; 
-        }  
+$(document).ready(function(){
+      $('#menu-button').click(function() { 
+          $(this).toggleClass('active');
+          $('.humberbug').toggleClass('active');
+          $('#menu').toggleClass('open');
+          $('#menu-left').toggleClass('active');
     });
-    $(document).on("scroll", onScroll);
-    function onScroll(event){
-        var scrollPos = $(document).scrollTop();
-        var menu_li_a=$('#menu li a');
-        menu_li_a.each(function () {
-            var currLink = $(this);
-            var current_attr=currLink.attr("href");
-            if(current_attr[0]=="#"){
-                var refElement = $(current_attr);
-                
-                if(refElement.length > 0){
-                    var current_element_top=parseFloat(refElement.position().top)-80;
-                    if (current_element_top<= scrollPos && current_element_top + refElement.height() > scrollPos) {
-                        menu_li_a.removeClass("active");
-                        currLink.addClass("active");
-                    }
-                }
 
+
+    // const tilt = $('.service-single-content').tilt()
+    // tilt.on('change', function(e, transforms){});
+
+
+
+    // $('.center').slick({
+    //   centerMode:true,
+    //   centerPadding: '0px',
+    //   slidesToShow: 4,
+    //   responsive: [
+    //     {
+    //       breakpoint: 768,
+    //       settings: {
+    //         arrows: false,
+    //         centerMode: true,
+    //         centerPadding: '40px',
+    //         slidesToShow: 1
+    //       }
+    //     },
+    //     {
+    //       breakpoint: 480,
+    //       settings: {
+    //         arrows: false,
+    //         centerMode: true,
+    //         centerPadding: '40px',
+    //         slidesToShow: 1
+    //       }
+    //     }
+    //   ]
+    // });
+    $('.one-time').slick({
+      dots: true,
+      infinite: true,
+      speed: 1000,
+      slidesToShow: 1
+    });
+    $('.team-main-slider').slick({
+      dots: true,
+      infinite: true,
+      speed: 1000,
+      slidesToShow: 1
+    });
+
+
+     $('#fullpage').fullpage({
+        anchors:['header', 'services', 'protfulio-area', 'our-team','contact-us'],
+        verticalCentered: true,
+        scrollOverflow: true,
+        scrollingSpeed: 1500
+    });
+
+     particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 380,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": "#d5ddf1"
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          },
+          "image": {
+            "src": "img/github.svg",
+            "width": 0,
+            "height": 0
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": {
+            "enable": false,
+            "speed": 1,
+            "opacity_min": 0.1,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 4,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 40,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": false,
+          "distance": 150,
+          "color": "#ffffff",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 1,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": false,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 140,
+            "line_linked": {
+              "opacity": 1
             }
-
-        });
-    }
-
-	$('.header-main').ripples({
-		resolution: 500,
-		dropRadius: 10,
-        perturbance: 0.01,
-	});
-
-	$(window).scroll(function(){
-        if($(document).scrollTop()>50){
-            $('.navbar').addClass('navnew');
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 40,
+            "duration": 2,
+            "opacity": 8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+          "remove": {
+            "particles_nb": 2
+          }
         }
-        else{
-            $('.navbar').removeClass('navnew');
-        }
+      },
+      "retina_detect": true
+    });
+
+})
+
+    var controller=new ScrollMagic.Controller();
+
+    var ourScene=new ScrollMagic.Scene({
+      triggerElement:'.heading_sec',
+      duretion:'100%',
+      triggerHook: 1
     })
-
-		  var lastScrollTop = 0;
-		  var $navbar = $('.navbar');
-		  var navbarHeight = $navbar.outerHeight();
-		  var movement = 0;
-		  var lastDirection = 0;
-
-		  $(window).scroll(function(event){
-		    var st = $(this).scrollTop();
-		    movement += st - lastScrollTop;
-
-		    if (st > lastScrollTop) { // scroll down
-		      if (lastDirection != 1) {
-		        movement = 0;
-		      }
-		      var margin = Math.abs(movement);
-		      if (margin > navbarHeight) {
-		        margin = navbarHeight;
-		      }
-		      margin = -margin;
-		      $navbar.css('margin-top', margin+"px")
-
-		      lastDirection = 1;
-		    } else { // scroll up
-		      if (lastDirection != -1) {
-		        movement = 0;
-		      }
-		      var margin = Math.abs(movement);
-		      if (margin > navbarHeight) {
-		        margin = navbarHeight;
-		      }
-		      margin = margin-navbarHeight;
-		      $navbar.css('margin-top', margin+"px")
-
-		      lastDirection = -1;
-		    }
-
-		    lastScrollTop = st;
-		    // console.log(margin);
-		  });
-
-	$('.clint-area-slider').owlCarousel({
-	    loop:true,
-	    margin:10,
-	    responsiveClass:true,
-	    animateIn:'fadeOut',
-    	animateOut:'fadeInRight',
-	    navText:['<i class="fa fa-long-arrow-left" aria-hidden="true"></i>','<i class="fa fa-long-arrow-right" aria-hidden="true"></i>'],
-	    responsive:{
-	        0:{
-	            items:1,
-	            nav:true
-	        },
-	        600:{
-	            items:1,
-	            nav:false
-	        },
-	        1000:{
-	            items:3,
-	            nav:true,
-	            loop:false
-	        }
-	    }
-	})
-	$('.travel-area-right').owlCarousel({
-		    loop:true,
-		    margin:10,
-		    responsiveClass:true,
-		    dots:true,
-		    animateIn:'fadeOut',
-	    	animateOut:'fadeInRight',
-		    navText:['<i class="fa fa-long-arrow-left" aria-hidden="true"></i>','<i class="fa fa-long-arrow-right" aria-hidden="true"></i>'],
-		    responsive:{
-		        0:{
-		            items:1,
-		            nav:true
-		        },
-		        600:{
-		            items:1,
-		            nav:false
-		        },
-		        1000:{
-		            items:1,
-		            nav:false,
-		            loop:false,
-		            dots:true
-		        }
-		    }
-		})
-})(jQuery);
+    .setClassToggle('.heading_sec','heading_sec_anim')
+    .addTo(controller);  
 
 
+    var ourScene=new ScrollMagic.Scene({
+      triggerElement:'.process-text',
+      duretion:'100%',
+      triggerHook: 1
+    })
+    .setClassToggle('.process-text','process-text_anim')
+    .addTo(controller);
+
+    var ourScene=new ScrollMagic.Scene({
+      triggerElement:'.item_sec_1',
+      duretion:'100%',
+      triggerHook: 1
+    })
+    .setClassToggle('.item_sec_1','item_sec_1_anim')
+    .addTo(controller);
+    
+
+    var ourScene=new ScrollMagic.Scene({
+      triggerElement:'.item_sec_2',
+      duretion:'100%',
+      triggerHook: 1
+    })
+    
+    .setClassToggle('.item_sec_2','item_sec_1_anim2')
+    .addTo(controller);
+    
+
+    var ourScene=new ScrollMagic.Scene({
+      triggerElement:'.item_sec_3',
+      duretion:'100%',
+      triggerHook: 1
+    })
+    .setClassToggle('.item_sec_3','item_sec_1_anim3')
+    .addTo(controller);
+    
+
+    var ourScene=new ScrollMagic.Scene({
+      triggerElement:'.item_sec_4',
+      duretion:'100%',
+      triggerHook: 1
+    })
+    .setClassToggle('.item_sec_4','item_sec_1_anim4')
+    .addTo(controller);
+    
+
+    var ourScene=new ScrollMagic.Scene({
+          triggerElement:'.heading_sec_2',
+          duretion:'100%',
+          triggerHook: 1
+        })
+        .setClassToggle('.heading_sec_2','heading_sec_2_anim')
+        .addTo(controller);
+     
+
+     var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.sec_text',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.sec_text','sec_text_anim')
+      .addTo(controller); 
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.protfulio-wrapper',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.protfulio-wrapper','protfulio-wrapper_anim')
+      .addTo(controller);
+
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.heading_sec_3',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.heading_sec_3','heading_sec_3_anim')
+      .addTo(controller); 
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.sec_text_3',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.sec_text_3','sec_text_3_anim')
+      .addTo(controller); 
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.service-process-heading',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.service-process-heading','service-process-heading_anim')
+      .addTo(controller);
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.service-process-text',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.service-process-text','service-process-text_anim')
+      .addTo(controller); 
+
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.service-process-single-content',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.service-process-single-content','service-process-single-content_anim')
+      .addTo(controller);
+      
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.team-main-slider',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.team-main-slider','team-main-slider_anim')
+      .addTo(controller);
+      
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.heading_sec_4',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.heading_sec_4','heading_sec_4_anim')
+      .addTo(controller);
+      
+
+      var ourScene=new ScrollMagic.Scene({
+        triggerElement:'.contact-us-main',
+        duretion:'100%',
+        triggerHook: 1
+      })
+      .setClassToggle('.contact-us-main','contact-us-main_anim')
+      .addTo(controller);
