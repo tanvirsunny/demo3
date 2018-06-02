@@ -1,146 +1,99 @@
-(function($){
+const tilt = $('.about-us-image').tilt()
+tilt.on('change', function(e, transforms){});
 
-	$(".scroll").on("click",function (event) {
-        var $hash=$(this.hash);
-        var $hasval=$(this).attr('href');
-        if($hasval[0]=="#"){
-            if($hash.length>0){
-                 event.preventDefault();
-                $('html,body').animate({
-                    scrollTop: ($hash.offset().top - 70)
-                }, 1000);
-                $(".scroll").removeClass("active");
-                $(this).addClass("active");
-            }
-            return false; 
-        }  
-    });
-    $(document).on("scroll", onScroll);
-    function onScroll(event){
-        var scrollPos = $(document).scrollTop();
-        var menu_li_a=$('#menu li a');
-        menu_li_a.each(function () {
-            var currLink = $(this);
-            var current_attr=currLink.attr("href");
-            if(current_attr[0]=="#"){
-                var refElement = $(current_attr);
-                
-                if(refElement.length > 0){
-                    var current_element_top=parseFloat(refElement.position().top)-80;
-                    if (current_element_top<= scrollPos && current_element_top + refElement.height() > scrollPos) {
-                        menu_li_a.removeClass("active");
-                        currLink.addClass("active");
-                    }
-                }
 
-            }
+window.requestAnimFrame = (function() {
+				return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+  function(callback) {
+	  window.setTimeout(callback, 1000 / 60);
+	};
+})();
 
-        });
-    }
+window.requestAnimFrame = (function() {
+				return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+  function(callback) {
+	  window.setTimeout(callback, 1000 / 60);
+	};
+})();
 
-	$('.header-main').ripples({
-		resolution: 500,
-		dropRadius: 10,
-        perturbance: 0.01,
+var canvas;
+var ctx;
+var WIDTH;
+var HEIGHT;
+var leftEye,rightEye;
+var mouse;
+
+Eye = function(pos) {
+  this.pos = {
+		x : pos.x,
+		y : pos.y
+	};
+	this.center = {
+		x : pos.x,
+		y : pos.y
+	};
+	this.translation = {
+		x : (window.innerWidth / 2 - canvas.width / 10) + this.center.x,
+		y :(window.innerWidth / 2 - canvas.width / 10) + this.center.y
+  };
+	this.newPos = {x : this.pos.x, y : this.pos.y};
+}
+
+Eye.prototype.draw = function() {
+  ctx.beginPath();
+	ctx.arc(this.pos.x, this.pos.y, 7, 0, Math.PI * 2);
+	ctx.fillStyle = '#fff';
+	ctx.fill();
+}
+
+Eye.prototype.update = function() {
+	var deltaX = mouse.x - this.translation.x;
+	var deltaY = mouse.y - this.translation.y;
+	var mag = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+	var angleRad = Math.atan2(deltaY, deltaX);
+	this.newPos.x = 10 * Math.cos(angleRad);
+	this.newPos.y = 19 * Math.sin(angleRad);
+  this.newPos.x += this.center.x;
+	this.newPos.y += this.center.y;
+	this.pos.x +=(this.newPos.x-this.pos.x)/5;
+	this.pos.y +=(this.newPos.y-this.pos.y)/5;
+}
+			
+var init = function() {
+  canvas = document.getElementById('canvas');
+	ctx = canvas.getContext('2d');
+	canvas.width = WIDTH = 300;
+	canvas.height = HEIGHT = 125;
+	leftEye = new Eye({
+	  x : WIDTH / 2 - 100,
+		y : HEIGHT / 2 + 18
 	});
+	rightEye = new Eye({
+		x : WIDTH / 2 + 8,
+		y : HEIGHT / 2 + 18
+	});
+	mouse = {
+		x : 0,
+		y : 0
+	};
+	bindEventHandlers();
+	draw();
+}
+    
+var draw = function() {
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+	leftEye.update();
+	rightEye.update();
+	leftEye.draw();
+	rightEye.draw();
+  requestAnimFrame(draw);
+}
+    
+var bindEventHandlers = function() {
+  document.onmousemove = function(e) {
+	  mouse.x = e.pageX;
+		mouse.y = e.pageY;
+	}
+}
 
-	$(window).scroll(function(){
-        if($(document).scrollTop()>50){
-            $('.navbar').addClass('navnew');
-        }
-        else{
-            $('.navbar').removeClass('navnew');
-        }
-    })
-
-		  var lastScrollTop = 0;
-		  var $navbar = $('.navbar');
-		  var navbarHeight = $navbar.outerHeight();
-		  var movement = 0;
-		  var lastDirection = 0;
-
-		  $(window).scroll(function(event){
-		    var st = $(this).scrollTop();
-		    movement += st - lastScrollTop;
-
-		    if (st > lastScrollTop) { // scroll down
-		      if (lastDirection != 1) {
-		        movement = 0;
-		      }
-		      var margin = Math.abs(movement);
-		      if (margin > navbarHeight) {
-		        margin = navbarHeight;
-		      }
-		      margin = -margin;
-		      $navbar.css('margin-top', margin+"px")
-
-		      lastDirection = 1;
-		    } else { // scroll up
-		      if (lastDirection != -1) {
-		        movement = 0;
-		      }
-		      var margin = Math.abs(movement);
-		      if (margin > navbarHeight) {
-		        margin = navbarHeight;
-		      }
-		      margin = margin-navbarHeight;
-		      $navbar.css('margin-top', margin+"px")
-
-		      lastDirection = -1;
-		    }
-
-		    lastScrollTop = st;
-		    // console.log(margin);
-		  });
-
-	$('.clint-area-slider').owlCarousel({
-	    loop:true,
-	    margin:10,
-	    responsiveClass:true,
-	    animateIn:'fadeOut',
-    	animateOut:'fadeInRight',
-	    navText:['<i class="fa fa-long-arrow-left" aria-hidden="true"></i>','<i class="fa fa-long-arrow-right" aria-hidden="true"></i>'],
-	    responsive:{
-	        0:{
-	            items:1,
-	            nav:true
-	        },
-	        600:{
-	            items:1,
-	            nav:false
-	        },
-	        1000:{
-	            items:3,
-	            nav:true,
-	            loop:false
-	        }
-	    }
-	})
-	$('.travel-area-right').owlCarousel({
-		    loop:true,
-		    margin:10,
-		    responsiveClass:true,
-		    dots:true,
-		    animateIn:'fadeOut',
-	    	animateOut:'fadeInRight',
-		    navText:['<i class="fa fa-long-arrow-left" aria-hidden="true"></i>','<i class="fa fa-long-arrow-right" aria-hidden="true"></i>'],
-		    responsive:{
-		        0:{
-		            items:1,
-		            nav:true
-		        },
-		        600:{
-		            items:1,
-		            nav:false
-		        },
-		        1000:{
-		            items:1,
-		            nav:false,
-		            loop:false,
-		            dots:true
-		        }
-		    }
-		})
-})(jQuery);
-
-
+init();
