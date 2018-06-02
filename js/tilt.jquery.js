@@ -190,7 +190,6 @@
             // Style glare wrapper
             this.glareElementWrapper.css(stretch).css({
                 'overflow': 'hidden',
-                'pointer-events': 'none',
             });
 
             // Style glare element
@@ -198,6 +197,7 @@
                 'position': 'absolute',
                 'top': '50%',
                 'left': '50%',
+                'pointer-events': 'none',
                 'background-image': `linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)`,
                 'width': `${$(this).outerWidth()*2}`,
                 'height': `${$(this).outerWidth()*2}`,
@@ -264,7 +264,7 @@
                 perspective: $(this).is('[data-tilt-perspective]') ? $(this).data('tilt-perspective') : 300,
                 easing: $(this).is('[data-tilt-easing]') ? $(this).data('tilt-easing') : 'cubic-bezier(.03,.98,.52,.99)',
                 scale: $(this).is('[data-tilt-scale]') ? $(this).data('tilt-scale') : '1',
-                speed: $(this).is('[data-tilt-speed]') ? $(this).data('tilt-speed') : '2000',
+                speed: $(this).is('[data-tilt-speed]') ? $(this).data('tilt-speed') : '1500',
                 transition: $(this).is('[data-tilt-transition]') ? $(this).data('tilt-transition') : true,
                 disableAxis: $(this).is('[data-tilt-disable-axis]') ? $(this).data('tilt-disable-axis') : null,
                 axis: $(this).is('[data-tilt-axis]') ? $(this).data('tilt-axis') : null,
